@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[HomeController::class,'index']);
+Route::get('/view_category',[AdminController::class,'view_category']);
+Route::post('/add_category',[AdminController::class,'add_category']);
+Route::get('/delete_category/{id}',[AdminController::class,'delete_category']);
+Route::get('/view_product',[AdminController::class,'view_product']);
 
 Route::middleware([
     'auth:sanctum',
