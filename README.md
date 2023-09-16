@@ -31,13 +31,13 @@ To get this project up and running, follow these steps:
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/ecommerce-clothing-management.git
+   gh repo clone JamZee99/eCommerce_Clothing_Website
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd ecommerce-clothing-management
+   cd eCommerce_Clothing_Website
    ```
 
 3. Install PHP dependencies using Composer:
