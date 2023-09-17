@@ -3,8 +3,10 @@
 <head>
     <!-- Required meta tags -->
     @include('admin.css')
+
 </head>
 <body>
+
 <div class="container-scroller">
     <!-- partial:partials/_sidebar.html -->
     @include('admin.sidebar')
@@ -13,22 +15,23 @@
         <!-- partial:partials/_navbar.html -->
         @include('admin.header')
         <!-- partial -->
+
         <div class="main-panel">
             <div id="main" class="content-wrapper ">
         <section class="content">
-
             <div class="row">
                 <div class="col-md-12">
 
-{{--                    @if($error_message)--}}
-                    <div class="callout callout-danger">
+                    @if($errors->any())
 
-                        <p>
-{{--                                <?php echo $error_message; ?>--}}
-                        </p>
-                    </div>
-{{--                    <?php endif; ?>--}}
+                        <div class="bg-orange-700 border-l-4 border-orange-500 text-orange-700 p-4 mb-3 rounded" role="alert">
+                            <p class="font-bold text-white">Be Warned</p>
+                        @foreach($errors->all() as $error)
 
+                                <p class="text-white">{{$error}}</p>
+                        @endforeach
+                        </div>
+                    @endif
 {{--                    <?php if($success_message): ?>--}}
                     <div class="callout callout-success">
 
@@ -36,7 +39,8 @@
                     </div>
 {{--                    <?php endif; ?>--}}
 
-                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="{{url('/add_product')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
 
                         <div class="box box-info">
                             <div class="box-body">
@@ -45,16 +49,9 @@
                                     <div class="col-sm-4">
                                         <select name="tcat_id" class="form-control select2 top-cat">
                                             <option value="">Select Top Level Category</option>
-{{--                                            <?php--}}
-{{--                                            $statement = $pdo->prepare("SELECT * FROM tbl_top_category ORDER BY tcat_name ASC");--}}
-{{--                                            $statement->execute();--}}
-{{--                                            $result = $statement->fetchAll(PDO::FETCH_ASSOC);--}}
-{{--                                            foreach ($result as $row) {--}}
-{{--                                                ?>--}}
-{{--                                            <option value="<?php echo $row['tcat_id']; ?>"><?php echo $row['tcat_name']; ?></option>--}}
-{{--                                                <?php--}}
-{{--                                            }--}}
-{{--                                            ?>--}}
+                                            @foreach ($category as $row) {
+                                            <option value="{{$row->category_name}}">{{$row->category_name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -69,7 +66,7 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">End Level Category Name <span>*</span></label>
                                     <div class="col-sm-4">
-                                        <select name="ecat_id" class="form-control select2 end-cat">
+                                        <select name="cat_id" class="form-control select2 end-cat">
                                             <option value="">Select End Level Category</option>
                                         </select>
                                     </div>
@@ -77,25 +74,25 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 control-label">Product Name <span>*</span></label>
                                     <div class="col-sm-4">
-                                        <input type="text" name="p_name" class="form-control">
+                                        <input type="text" name="p_name" class="form-control" value="{{old('p_name')}}">
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 control-label">Old Price <br><span style="font-size:10px;font-weight:normal;">(In Rupees)</span></label>
                                     <div class="col-sm-4">
-                                        <input type="text" name="p_old_price" class="form-control">
+                                        <input type="text" name="p_old_price" value="{{old('p_old_price')}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Current Price <span>*</span><br><span style="font-size:10px;font-weight:normal;">(In Rupees)</span></label>
                                     <div class="col-sm-4">
-                                        <input type="text" name="p_current_price" class="form-control">
+                                        <input type="text" value="{{old('p_current_price')}}" name="p_current_price" class="form-control">
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Quantity <span>*</span></label>
                                     <div class="col-sm-4">
-                                        <input type="number" name="p_qty" class="form-control">
+                                        <input type="number" value="{{old('p_qty')}}" name="p_qty" class="form-control">
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -112,6 +109,7 @@
 {{--                                                <?php--}}
 {{--                                            }--}}
 {{--                                            ?>--}}
+                                            <option>Xl</option>
                                         </select>
                                     </div>
                                 </div>
@@ -129,14 +127,14 @@
 {{--                                                <?php--}}
 {{--                                            }--}}
 {{--                                            ?>--}}
-
+                                            <option>black</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 control-label">Featured Photo <span>*</span></label>
                                     <div class="col-sm-4" style="padding-top:4px;">
-                                        <input type="file" name="p_featured_photo">
+                                        <input type="file" value="{{old('p_featured_photo')}}" name="p_featured_photo"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">

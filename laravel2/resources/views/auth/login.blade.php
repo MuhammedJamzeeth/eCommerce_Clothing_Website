@@ -1,9 +1,13 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
 
+
+<x-guest-layout>
+
+    <x-authentication-card>
+        <div class="mx-auto flex justify-content-center align-items-center">
+                <a href="/">
+                    <img src="admin/assets/images/2.png" alt="logo" style="width: 29%; border-radius: 4rem; margin: auto">
+                </a>
+        </div>
         <x-validation-errors class="mb-4" />
 
         @if (session('status'))

@@ -104,7 +104,7 @@
                                 <div class="card-body">
                                     <h4 class="card-title">Category Status</h4>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table id="" class="table ">
                                             <thead>
                                             <tr>
                                                 <th> ID </th>
@@ -122,8 +122,8 @@
                                                     <td>{{$data->created_at}}</td>
                                                     <td>{{$data->updated_at}}</td>
                                                     <td>
-{{--                                                        <a onclick="return confirm('Are you sure to DELETE this?')" class="btn btn-danger" ">Delete</a>--}}
-                                                        <a href="{{url('delete_category',$data->id)}}" class="btn btn-danger" data-href="{{url('delete_category',$data->id)}}" data-toggle="modal" data-target="#confirm-delete">Delete</a>
+{{--                                                    <a onclick="return confirm('Are you sure to DELETE this?')" class="btn btn-danger" ">Delete</a>--}}
+                                                        <button type="button" value="{{$data->id}}" data-category="{{$data->category_name}}" class="btn btn-danger deleteCat" >Delete</button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -147,19 +147,52 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
+                        <form method="POST" action="{{url("/delete_category")}}">
                         <p>Are you sure want to delete this item?</p>
+                        <p>Are you sure you want to delete the following item?</p>
+                        <p><strong>ID:</strong> <span id="confirm_id"></span></p>
+                        <input type="hidden" name="confirm_id" value="" id="cID">
+                        <p><strong>Category Name:</strong> <span id="confirm-category"></span></p>
                         <p style="color:red;">Be careful! This product will be deleted from the order table, payment table, size table, color table and rating table also.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <a href="{{url('delete_category',$data->id)}}" class="btn btn-danger btn-ok">Delete</a>
+
+                            @csrf
+                            @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-ok">Delete</button>
+
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
+
         <!-- container-scroller -->
         <!-- plugins:js -->
         @include('admin.script')
+            <script>
+                $(document).ready(function() {
+                    // Store the row data when a "Delete" button is clicked
+                    $('.deleteCat').click(function(e) {
+                        e.preventDefault();
+                        var id = $(this).val();
+                        var category = $(this).data('category');
+
+                        $('#confirm_id').text(id);
+                        $('#cID').val(id);
+
+                        $('#confirm-category').text(category);
+
+                        $('#confirm-delete').modal('show');
+
+                        // $('#confirm-delete').modal('show');
+                        // Store the data for the specific row
+                        $('#confirm-delete-button').data('id', id);
+                    });
+                });
+            </script>
+
         <script>
             setTimeout(function () {
                 var alertDiv = document.getElementById('alertDiv');
@@ -171,6 +204,15 @@
                 }
             }, 4000); // 5000 milliseconds = 5 seconds
         </script>
+        <script>
+            import DataTable from 'datatables.net-dt';
+
+            let table = new DataTable('#myTable', {
+                // config options...
+            });
+        </script>
+        <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+
         <!-- End custom js for this page -->
 </body>
 </html>

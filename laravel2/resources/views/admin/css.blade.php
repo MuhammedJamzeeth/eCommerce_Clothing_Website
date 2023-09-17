@@ -17,3 +17,16 @@
 <link rel="stylesheet" href="admin/assets/css/style.css">
 <!-- End layout styles -->
 <link rel="shortcut icon" href="admin/assets/images/2.png" />
+
+<style>
+    @tailwind base;
+
+    @tailwind components;
+
+    @tailwind utilities;
+</style>
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+{{--DataTable--}}
+<link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css
+">
