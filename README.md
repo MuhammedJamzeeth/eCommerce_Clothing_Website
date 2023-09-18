@@ -34,37 +34,43 @@ To get this project up and running, follow these steps:
    gh repo clone JamZee99/eCommerce_Clothing_Website
    ```
 
-2. Navigate to the project directory:
+2. Update Tailwind, as well as PostCSS and autoprefixer, using npm:
 
    ```bash
-   cd eCommerce_Clothing_Website
+   npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
    ```
 
-3. Install PHP dependencies using Composer:
+3. Navigate to the project directory:
+
+   ```bash
+   cd laravel2
+   ```
+
+4. Install PHP dependencies using Composer:
 
    ```bash
    composer install
    ```
 
-4. Install JavaScript dependencies using npm:
+5. Install JavaScript dependencies using npm:
 
    ```bash
    npm install
    ```
 
-5. Create a copy of the `.env.example` file and rename it to `.env`. Configure your database credentials and other settings in this file:
+6. Create a copy of the `.env.example` file and rename it to `.env`. Configure your database credentials and other settings in this file:
 
    ```bash
    cp .env.example .env
    ```
 
-6. Generate an application key:
+7. Generate an application key:
 
    ```bash
    php artisan key:generate
    ```
 
-7. Run the database migrations and seed the database with sample data:
+8. Run the database migrations and seed the database with sample data:
 
    ```bash
    php artisan migrate --seed
