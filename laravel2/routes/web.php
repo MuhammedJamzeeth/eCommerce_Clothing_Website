@@ -17,12 +17,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class,'index']);
 Route::get('/view_category',[AdminController::class,'view_category']);
+
+Route::get('/view_subcategory',[AdminController::class,'view_subCategory']);
+Route::post('/add_subcategory',[AdminController::class,'add_subCategory']);
+
+
 Route::post('/add_category',[AdminController::class,'add_category']);
 Route::post('/add_product',[AdminController::class,'add_product']);
 Route::delete('/delete_category',[AdminController::class,'delete_category']);
 Route::get('/view_product',[AdminController::class,'view_product']);
 Route::get('/view_product',[AdminController::class,'showCat']);
-
+Route::get('/show_product',[AdminController::class,'show_product']);
 
 Route::middleware([
     'auth:sanctum',

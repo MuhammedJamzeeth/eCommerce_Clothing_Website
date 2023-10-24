@@ -1,6 +1,6 @@
 (function($) {
   'use strict';
-
+  $(".select2").select2();
   if ($(".js-example-basic-single").length) {
     $(".js-example-basic-single").select2();
   }

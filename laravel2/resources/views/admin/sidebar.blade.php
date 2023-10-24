@@ -88,18 +88,41 @@
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{url('/view_product')}}">Add Product</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Show Product</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{url('/show_product')}}">Show Product</a></li>
                 </ul>
             </div>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" href="{{url('view_category')}}">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic1" aria-expanded="false" aria-controls="ui-basic">
               <span class="menu-icon">
                 <i class="mdi mdi-playlist-play"></i>
               </span>
                 <span class="menu-title">Category</span>
+                <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="ui-basic1">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{url('view_category')}}">Add Top Category</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{url('/view_subcategory')}}">Add End Category</a></li>
+                </ul>
+            </div>
         </li>
+
+{{--        <li class="nav-item menu-items">--}}
+{{--            <a class="nav-link" href="{{url('view_category')}}">--}}
+{{--              <span class="menu-icon">--}}
+{{--                <i class="mdi mdi-playlist-play"></i>--}}
+{{--              </span>--}}
+{{--                <span class="menu-title">Category</span>--}}
+{{--            </a>--}}
+{{--            <div class="collapse" id="ui-basic">--}}
+{{--                <ul class="nav flex-column sub-menu">--}}
+{{--                    <li class="nav-item"> <a class="nav-link" href="{{url('/view_product')}}">Add Product</a></li>--}}
+{{--                    <li class="nav-item"> <a class="nav-link" href="{{url('/show_product')}}">Show Product</a></li>--}}
+{{--                </ul>--}}
+{{--            </div>--}}
+
+{{--        </li>--}}
 
     </ul>
 </nav>

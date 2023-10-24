@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
     <!-- Required meta tags -->
+
     @include('admin.css')
+    <link rel="stylesheet" href="admin/assets/css/select2.min.css">
 
 </head>
 <body>
 
 <div class="container-scroller">
     <!-- partial:partials/_sidebar.html -->
+
     @include('admin.sidebar')
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
@@ -39,6 +42,7 @@
                     </div>
 {{--                    <?php endif; ?>--}}
 
+
                     <form class="form-horizontal" action="{{url('/add_product')}}" method="POST" enctype="multipart/form-data">
                         @csrf
 
@@ -47,10 +51,10 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Top Level Category Name <span>*</span></label>
                                     <div class="col-sm-4">
-                                        <select name="tcat_id" class="form-control select2 top-cat">
+                                        <select name="Top_Level_Category" class="form-control  top-cat">
                                             <option value="">Select Top Level Category</option>
                                             @foreach ($category as $row) {
-                                            <option value="{{$row->category_name}}">{{$row->category_name}}</option>
+                                            <option value="{{$row->id}}">{{$row->category_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -66,7 +70,7 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">End Level Category Name <span>*</span></label>
                                     <div class="col-sm-4">
-                                        <select name="cat_id" class="form-control select2 end-cat">
+                                        <select name="cat_id" class="form-control end-cat">
                                             <option value="">Select End Level Category</option>
                                         </select>
                                     </div>
@@ -98,25 +102,17 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Select Size</label>
                                     <div class="col-sm-4">
-                                        <select name="size[]" class="form-control select2" multiple="multiple">
-{{--                                            <?php--}}
-{{--                                            $statement = $pdo->prepare("SELECT * FROM tbl_size ORDER BY size_id ASC");--}}
-{{--                                            $statement->execute();--}}
-{{--                                            $result = $statement->fetchAll(PDO::FETCH_ASSOC);--}}
-{{--                                            foreach ($result as $row) {--}}
-{{--                                                ?>--}}
-{{--                                            <option value="<?php echo $row['size_id']; ?>"><?php echo $row['size_name']; ?></option>--}}
-{{--                                                <?php--}}
-{{--                                            }--}}
-{{--                                            ?>--}}
-                                            <option>Xl</option>
+                                        <select name="size[]" class="form-control select2" multiple="multiple" >
+                                            @foreach ($size as $row) {
+                                            <option value="{{$row->size_id}}">{{$row->size_name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Select Color</label>
                                     <div class="col-sm-4">
-                                        <select name="color[]" class="form-control select2" multiple="multiple">
+                                        <select name="color[]" class="form-control select2 " multiple="multiple">
 {{--                                            <?php--}}
 {{--                                            $statement = $pdo->prepare("SELECT * FROM tbl_color ORDER BY color_id ASC");--}}
 {{--                                            $statement->execute();--}}
@@ -134,7 +130,7 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 control-label">Featured Photo <span>*</span></label>
                                     <div class="col-sm-4" style="padding-top:4px;">
-                                        <input type="file" value="{{old('p_featured_photo')}}" name="p_featured_photo"/>
+                                        <input type="file" value="{{old('p_featured_photo')}}" name="featured_photo"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -160,31 +156,31 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Description</label>
                                     <div class="col-sm-8">
-                                        <textarea name="p_description" class="form-control" cols="30" rows="10" id="editor1"></textarea>
+                                        <textarea name="p_description" class="form-control"  id="summernote1"></textarea>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Short Description</label>
                                     <div class="col-sm-8">
-                                        <textarea name="p_short_description" class="form-control" cols="30" rows="10" id="editor2"></textarea>
+                                        <textarea name="p_short_description" class="form-control" id="summernote2"></textarea>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Features</label>
                                     <div class="col-sm-8">
-                                        <textarea name="p_feature" class="form-control" cols="30" rows="10" id="editor3"></textarea>
+                                        <textarea name="p_feature" class="form-control" id="summernote3"></textarea>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Conditions</label>
                                     <div class="col-sm-8">
-                                        <textarea name="p_condition" class="form-control" cols="30" rows="10" id="editor4"></textarea>
+                                        <textarea name="p_condition" class="form-control" id="summernote4"></textarea>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-3 col-form-label">Return Policy</label>
                                     <div class="col-sm-8">
-                                        <textarea name="p_return_policy" class="form-control" cols="30" rows="10" id="editor5"></textarea>
+                                        <textarea name="p_return_policy" class="form-control" id="summernote5"></textarea>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -215,7 +211,7 @@
                         </div>
 
                     </form>
-
+                        </div>
 
                 </div>
             </div>
@@ -225,6 +221,7 @@
         </div>
         <!-- container-scroller -->
         <!-- plugins:js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         @include('admin.script')
         <!-- End custom js for this page -->
 
