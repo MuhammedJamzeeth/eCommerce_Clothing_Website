@@ -102,7 +102,7 @@
                         <div class="col-12 grid-margin">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Category Status</h4>
+                                    <h4 class="card-title">Top Category Status</h4>
                                     <div class="table-responsive">
                                         <table id="" class="table ">
                                             <thead>
@@ -111,7 +111,7 @@
                                                 <th> Category Name </th>
                                                 <th> Created at </th>
                                                 <th> Updated </th>
-                                                <th> Payment Status </th>
+                                                <th> # </th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -142,7 +142,7 @@
         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header w-1">
+                    <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
@@ -153,7 +153,7 @@
                         <p><strong>ID:</strong> <span id="confirm_id"></span></p>
                         <input type="hidden" name="confirm_id" value="" id="cID">
                         <p><strong>Category Name:</strong> <span id="confirm-category"></span></p>
-                        <p style="color:red;">Be careful! This product will be deleted from the order table, payment table, size table, color table and rating table also.</p>
+                            <p style="color:red;">Be careful! This category will be deleted from the category table and <span style="color: yellow">subcategory table</span></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

@@ -17,11 +17,52 @@
 <!-- Custom js for this page -->
 <script src="admin/assets/js/dashboard.js"></script>
 
-{{--Datatable--}}
-<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- include summernote css/js -->
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+{{--select2--}}
+{{--<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>--}}
+<script src="admin/assets/js/select2.full.min.js"></script>
 <script>
     $(document).ready( function () {
-        $('#myTable').DataTable();
+        $(".select2").select2({
+            // multiple:true,
+
+        });
+
+        $('#myTable').DataTable({
+            // "scrollX": true
+        });
     } );
 </script>
+<script>
+    $(document).ready(function() {
+        $('#summernote1').summernote({
+            height: 200,
+            placeholder: 'Hi, Dress Code Admin. Please, write description here!',
+
+        });
+        $('#summernote2').summernote({
+            height: 200,
+            placeholder: 'Hi, Dress Code Admin. Please, write short description here!',
+
+        });
+        $('#summernote3').summernote({
+            height: 200,
+            placeholder: 'Hi, Dress Code Admin. Please, write feature here!',
+
+        });
+        $('#summernote4').summernote({
+            height: 200,
+            placeholder: 'Hi, Dress Code Admin. Please, write condition here!',
+
+        });
+        $('#summernote5').summernote({
+            height: 200,
+            placeholder: 'Hi, Dress Code Admin. Please, write return policy here!',
+
+        });
+    });
+</script>
+
 @yield('scripts')
