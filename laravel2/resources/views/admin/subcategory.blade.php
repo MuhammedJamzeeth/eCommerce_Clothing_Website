@@ -87,7 +87,7 @@
                             <div class="col-md-5 form-group ">
                                     <select id="catIn" name="Top_Level_Category" class="form-control">
                                         @if($errors->has('Top_Level_Category'))
-                                            <option value=""><span style="color: red">{{$errors->first('Top_Level_Category')}}</span></option>
+                                            <option style="color: red" value="">{{$errors->first('Top_Level_Category')}}</option>
                                             @else
                                             <option value="">Select Top Level Category</option>
                                         @endif
@@ -97,10 +97,10 @@
                                     </select>
                             </div>
                             <div class="col-md-5 form-group ">
-                                @if($errors->has('sub_category_name'))
-                                    <input id="catInError" class="mx-auto  form-control" type="text" name="category_name" placeholder="{{$errors->first('sub_category_name')}}">
+                                @if($errors->has('subcategory_name'))
+                                    <input id="catInError" class="mx-auto  form-control" type="text" name="category_name" placeholder="{{$errors->first('subcategory_name')}}">
                                 @else
-                                    <input id="catIn" class="mx-auto  form-control" type="text" name="sub_category_name" placeholder="Write category name">
+                                    <input id="catIn" class="mx-auto  form-control" type="text" name="subcategory_name" placeholder="Write category name">
                                 @endif
                             </div>
                             <div class="col-md-2 form-group">
@@ -161,7 +161,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="{{url("/delete_category")}}">
+                        <form method="POST" action="{{url('/delete_subCategory')}}">
                             <p>Are you sure want to delete this item?</p>
                             <p>Are you sure you want to delete the following item?</p>
                             <p><strong>ID:</strong> <span id="confirm_id"></span></p>

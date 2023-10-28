@@ -36,7 +36,7 @@
                             <a class="btn btn-primary" id="logincss" href="{{ route('login') }}">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-success" href="{{ route('register') }}">Registration</a>
+                            <a class="btn btn-success bg-dark" href="{{ route('register') }}">Registration</a>
                         </li>
                         @endauth
                         @endif
