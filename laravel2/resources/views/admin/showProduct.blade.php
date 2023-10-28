@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <!-- Required meta tags -->
     @include('admin.css')
+    <style>
+
+    </style>
 
 </head>
 <body>
@@ -31,22 +34,36 @@
                             <th>Current Price</th>
                             <th>Quantity</th>
                             <th>Active</th>
-                            <th>Category</th>
+                            <th>Color</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                            <td>2011-04-25</td>
-                            <td>$320,800</td>
-                            <td>2011-04-25</td>
-                            <td>$320,800</td>
-                        </tr>
+                        @foreach($products as $product)
+                            <tr>
+                                <td><img src="product/{{$product->image}}" alt="img"></td>
+                                <td>{{$product->title}}</td>
+                                <td>Rs.{{$product->old_price}}</td>
+                                <td>Rs.{{$product->current_price}}</td>
+                                <td>{{$product->quantity}}</td>
+                                <td>
+                                    <form action="{{route('admin.active',$product->id)}}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                            @if($product->is_active == 1)
+                                                <button type="submit" class="btn btn-danger" style="font-size: small; padding: 4px" name="action" value="0">Deactivate</button>
+                                            @else
+                                                <button type="submit" class="btn btn-success" style="font-size: small; padding: 4px" name="action" value="1">Activate</button>
+                                            @endif
+                                    </form>
+                                </td>
+{{--                                <td>{{htmlspecialchars(trim(strip_tags($product->description)))}}</td>--}}
+                                <td>{{$product->color}}</td>
+                                <td><button type="button" class="btn btn-primary" style="font-size: small;padding: 4px">Edit</button>
+                                    <button type="button" class="btn btn-danger" style="font-size: small;padding: 4px">Delete</button>
 
+                                </td>
+                            </tr>
+                        @endforeach
                         </tfoot>
                     </table>
                     </div>
@@ -66,6 +83,7 @@
         $('#example').DataTable();
     } );
 </script>
+
         @include('admin.script')
         <!-- End custom js for this page -->
 

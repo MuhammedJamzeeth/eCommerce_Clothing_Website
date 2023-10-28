@@ -14,13 +14,25 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('image')->nullable();
             $table->string('category')->nullable();
             $table->string('quantity')->nullable();
-            $table->string('price')->nullable();
-            $table->string('discount_price')->nullable();
-            $table->integer('cat_id')->nullable();
+            $table->double('current_price')->nullable();
+            $table->double('old_price')->nullable();
+            $table->string('size')->nullable();
+            $table->string('color')->nullable();
+            $table->longText('short_description')->nullable();
+            $table->longText('condition')->nullable();
+            $table->longText('return_policy')->nullable();
+            $table->enum('is_featured',['0','1'])->default('0');
+            $table->enum('is_active',['0','1'])->default('0');
+
+            $table->unsignedBigInteger('cat_id')->nullable();
+            $table->integer('end_cat')->nullable();
+
+            $table->foreign('cat_id')->references('id')->on('categories')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
