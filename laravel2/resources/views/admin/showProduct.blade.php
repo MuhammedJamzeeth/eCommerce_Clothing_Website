@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
+    <base href="{{ url('/') }}">
     {{--DataTable--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -33,7 +34,7 @@
                             <th>Old Price</th>
                             <th>Current Price</th>
                             <th>Quantity</th>
-                            <th>Active</th>
+                            <th>Active?</th>
                             <th>Color</th>
                             <th>Action</th>
                         </tr>
@@ -41,7 +42,7 @@
                         <tbody>
                         @foreach($products as $product)
                             <tr>
-                                <td><img src="product/{{$product->image}}" alt="img"></td>
+                                <td style="width:82px;"><img src="product/{{$product->image}}" alt="img" style="width:50px;height: 50px"></td>
                                 <td>{{$product->title}}</td>
                                 <td>Rs.{{$product->old_price}}</td>
                                 <td>Rs.{{$product->current_price}}</td>
@@ -50,15 +51,16 @@
                                     <form action="{{route('admin.active',$product->id)}}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                             @if($product->is_active == 1)
-                                                <button type="submit" class="btn btn-danger" style="font-size: small; padding: 4px" name="action" value="0">Deactivate</button>
+                                                <button type="submit" class="btn btn-danger rounded-pill" style="font-size: small;width: 40px; padding: 3px" name="action" value="0">No</button>
                                             @else
-                                                <button type="submit" class="btn btn-success" style="font-size: small; padding: 4px" name="action" value="1">Activate</button>
+                                                <button type="submit" class="btn btn-success rounded-pill" style="font-size: small;width: 40px; padding: 4px" name="action" value="1">Yes</button>
                                             @endif
                                     </form>
                                 </td>
 {{--                                <td>{{htmlspecialchars(trim(strip_tags($product->description)))}}</td>--}}
                                 <td>{{$product->color}}</td>
-                                <td><button type="button" class="btn btn-primary" style="font-size: small;padding: 4px">Edit</button>
+                                <td>
+                                    <a href="{{route('editProduct',['id'=>$product->id])}}"><button type="submit" class="btn btn-primary" style="font-size: small;padding: 4px">Edit</button></a>
                                     <button type="button" class="btn btn-danger" style="font-size: small;padding: 4px">Delete</button>
 
                                 </td>
@@ -80,7 +82,9 @@
 <script defer src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>
     $(document).ready( function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            "autoWidth": false,
+        });
     } );
 </script>
 

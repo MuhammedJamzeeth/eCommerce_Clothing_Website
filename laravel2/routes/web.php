@@ -33,6 +33,11 @@ Route::get('/show_product',[AdminController::class,'show_product']);
 
 Route::post('/activate/{id}',[AdminController::class,'activateOrDeactivate'])->name('admin.active');
 
+Route::get('/editProduct/{id}',[AdminController::class,'editProduct'])->name('editProduct');
+Route::post('/edit_product/{id}',[AdminController::class,'editP']);
+
+Route::get('/admin_home',[AdminController::class,'viewHome']);
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

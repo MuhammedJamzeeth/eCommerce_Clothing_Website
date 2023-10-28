@@ -125,4 +125,51 @@ class AdminController extends Controller
         $size = DB::select('select * from tbl_size');
         return view('admin.product',compact('category','size','subCategory','color'));
     }
+
+    public function editProduct($id){
+//        dd($id);
+        $category = Category::all();
+        $color = DB::select('SELECT * from tbl_color');
+        $subCategory = subcategories::all();
+        $size = DB::select('select * from tbl_size');
+        return view('admin.editProduct',['product' => Product::where('id',$id)->first()],compact('category','size','subCategory','color'));
+    }
+
+    public function editP(Request $request,$id){
+
+        $image = $request->featured_photo;
+        if ($request->hasFile('featured_photo')) {
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $image->move('product',$imagename);
+        }else{
+            $imagename = $request->photo;
+        }
+
+
+
+        DB::table('products')
+            ->where('id',$id)
+            ->update([
+                'cat_id' => $request->Top_Level_Category,
+                'end_cat' => $request->end_level_category,
+                'title' => $request->product_name,
+                'old_price' => $request->old_price,
+                'current_price' => $request->current_price,
+                'quantity' => $request->quantity,
+                'size' => $request->size,
+                'color' => $request->color,
+                'description' => $request->p_description,
+                'short_description' => $request->short_description,
+                'condition' => $request->condition,
+                'return_policy' => $request->return_policy,
+                'is_featured' => $request->is_featured,
+                'is_active' => $request->is_active,
+                'image'=> $imagename,
+            ]);
+        return redirect()->back();
+    }
+
+    public function viewHome(){
+        return view('admin.home');
+    }
 }
