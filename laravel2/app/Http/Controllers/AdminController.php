@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductPhotos;
 use App\Models\subcategories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -61,6 +63,12 @@ class AdminController extends Controller
         return redirect()->back()->with('deleteMessage','Category Deleted Successfully');
 
     }
+    public function delete_product($id){
+//        Category::destroy($request->confirm_id);
+        Product::destroy($id);
+        return redirect()->back()->with('deleteMessage','Product Deleted Successfully');
+
+    }
 //    public function view_product(){
 //
 //        $subCategory = subcategories::all();
@@ -110,6 +118,34 @@ class AdminController extends Controller
         $data->image = $imagename;
 
         $data->save();
+
+        $productId = $data->id;
+
+        $otherPhotos = $request->file('photo');
+
+//        $otherPhotoName = time().'.'.$otherPhotos->getClientOriginalExtension();
+
+//        dd($otherPhotos);
+
+        $i=0;
+        if($otherPhotos){
+            foreach($otherPhotos as $otherPhoto){
+
+                $productPhoto = new ProductPhotos();
+                $originalFilename = $otherPhoto->getClientOriginalName();
+                $extension = $otherPhoto->getClientOriginalExtension();
+                $newFilename = md5($originalFilename . time()) . '.' . $extension; // Generate a unique filename
+                $ip[$i] = $newFilename;
+                $i++;
+                $otherPhoto->move('product',$newFilename);
+                $productPhoto->image = $newFilename;
+                $productPhoto->product_id = $productId;
+                $productPhoto->save();
+
+            }
+        }
+
+
 
         return redirect()->back()->with('message','Product Added Successfully');
     }
@@ -166,10 +202,28 @@ class AdminController extends Controller
                 'is_active' => $request->is_active,
                 'image'=> $imagename,
             ]);
-        return redirect()->back();
+        $products = Product::all();
+
+        return redirect('/show_product')->with('message','Product edited successfully');
+//        return redirect()->back();
     }
 
     public function viewHome(){
-        return view('admin.home');
+        $currentDate = Carbon::now()->toDateString();
+
+        $countProducts =DB::table('products')->whereNotNull('id')->count();
+        $countNew = Product::whereDate('created_at', $currentDate)->count();
+
+        $countUsers = DB::table('users')->whereNotNull('id')->count();
+        $countUsers--;
+        $countNewUsers = DB::table('users')->whereDate('created_at',$currentDate)->count();
+
+        $countTCat = DB::table('categories')->whereNotNull('id')->count();
+        $countNewTCat = DB::table('categories')->whereDate('created_at',$currentDate)->count();
+
+        $countECat = DB::table('subcategories')->whereNotNull('id')->count();
+        $countNewECat = DB::table('subcategories')->whereDate('created_at',$currentDate)->count();
+
+        return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat'));
     }
 }

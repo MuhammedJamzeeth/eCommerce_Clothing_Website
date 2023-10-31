@@ -32,8 +32,8 @@
                         <div class="row">
                             <div class="col-9">
                                 <div class="d-flex align-items-center align-self-start">
-                                    <h3 class="mb-0">$12.34</h3>
-                                    <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                                    <h3 class="mb-0">{{$countProducts}}</h3>
+                                    <p class="text-success ml-2 mb-0 font-weight-medium">+{{$countNew}}</p>
                                 </div>
                             </div>
                             <div class="col-3">
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h6 class="text-muted font-weight-normal">Potential growth</h6>
+                        <h6 class="text-muted font-weight-normal">Products</h6>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h6 class="text-muted font-weight-normal">Revenue current</h6>
+                        <h6 class="text-muted font-weight-normal">Pending order</h6>
                     </div>
                 </div>
             </div>
@@ -77,12 +77,11 @@
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="icon icon-box-danger">
-                                    <span class="mdi mdi-arrow-bottom-left icon-item"></span>
-                                </div>
+                                <div class="icon icon-box-success">
+                                    <iconify-icon icon="mdi:checkbox-outline"></iconify-icon>                                </div>
                             </div>
                         </div>
-                        <h6 class="text-muted font-weight-normal">Daily Income</h6>
+                        <h6 class="text-muted font-weight-normal">Complete order</h6>
                     </div>
                 </div>
             </div>
@@ -98,15 +97,99 @@
                             </div>
                             <div class="col-3">
                                 <div class="icon icon-box-success ">
-                                    <span class="mdi mdi-arrow-top-right icon-item"></span>
+{{--                                    <span class="mdi mdi-arrow-top-right icon-item"></span>--}}
+                                    <iconify-icon icon="gridicons:checkmark-circle"></iconify-icon>
                                 </div>
                             </div>
                         </div>
-                        <h6 class="text-muted font-weight-normal">Expense current</h6>
+                        <h6 class="text-muted font-weight-normal">Complete shipping</h6>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="d-flex align-items-center align-self-start">
+                                    <h3 class="mb-0">$12.34</h3>
+                                    <p class="text-success ml-2 mb-0 font-weight-medium">+3.5%</p>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="icon icon-box-success ">
+                                    <iconify-icon icon="uiw:loading"></iconify-icon>                                </div>
+                            </div>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">Pending Shipping</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="d-flex align-items-center align-self-start">
+                                    <h3 class="mb-0">{{$countUsers}}</h3>
+                                    <p class="text-success ml-2 mb-0 font-weight-medium">+{{$countNewUsers}}</p>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="icon icon-box-success">
+                                    <iconify-icon icon="fontisto:persons"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">Active Customer</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="d-flex align-items-center align-self-start">
+                                    <h3 class="mb-0">{{$countTCat}}</h3>
+                                    <p class="text-success ml-2 mb-0 font-weight-medium">+{{$countNewTCat}}</p>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="icon icon-box-success">
+                                    <iconify-icon icon="raphael:arrowup"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">Top Categories</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="d-flex align-items-center align-self-start">
+                                    <h3 class="mb-0">{{$countECat}}</h3>
+                                    <p class="text-success ml-2 mb-0 font-weight-medium">+{{$countNewECat}}</p>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="icon icon-box-success ">
+                                    {{--                                    <span class="mdi mdi-arrow-top-right icon-item"></span>--}}
+                                    <iconify-icon icon="raphael:arrowdown"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">End Categories</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
@@ -138,7 +221,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-row justify-content-between">
-                            <h4 class="card-title mb-1">Open Projects</h4>
+                            <h4 class="card-title mb-1">Recent Orders</h4>
                             <p class="text-muted mb-1">Your data status</p>
                         </div>
                         <div class="row">
@@ -146,8 +229,7 @@
                                 <div class="preview-list">
                                     <div class="preview-item border-bottom">
                                         <div class="preview-thumbnail">
-                                            <div class="preview-icon bg-primary">
-                                                <i class="mdi mdi-file-document"></i>
+                                            <div class="preview-icon border border-primary">
                                             </div>
                                         </div>
                                         <div class="preview-item-content d-sm-flex flex-grow">
@@ -678,6 +760,7 @@
 </div>
 <!-- page-body-wrapper ends -->
 </div>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script>
     function toggleAllCheckboxes() {
         var checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');

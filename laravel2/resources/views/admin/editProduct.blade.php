@@ -44,7 +44,7 @@
                     @if(session()->has('message'))
                         <div id="alertDiv" class="audun_success">
                             <i class="fa fa-check-circle" aria-hidden="true"></i>
-                            Product added successfully
+                            {{$mesage}}
                         </div>
                     @endif
                 </div>
@@ -148,7 +148,7 @@
                                             <div class="col-sm-4">
                                                 <select name="size" class="form-control" >
                                                     @foreach ($size as $row) {
-                                                    <option value="{{$row->size_id}}" @if($row->size_id == $product->size) {{"selected"}} @endif>{{$row->size_name}}</option>
+                                                    <option value="{{$row->size_name}}" @if($row->size_name == $product->size) {{"selected"}} @endif>{{$row->size_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 @if($errors->has('size'))
