@@ -149,7 +149,7 @@
                                         <select name="size" class="form-control" >
                                             <option value="">Select size</option>
                                             @foreach ($size as $row) {
-                                            <option value="{{$row->size_id}}">{{$row->size_name}}</option>
+                                            <option value="{{$row->size_name}}">{{$row->size_name}}</option>
                                             @endforeach
                                         </select>
                                         @if($errors->has('size'))
@@ -179,6 +179,26 @@
                                         @if($errors->has('featured_photo'))
                                             <small id="emailHelp" class="form-text text-muted"><span style="color: red">{{$errors->first('featured_photo')}}</span></small>
                                         @endif
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-3 control-label">Other Photos</label>
+                                    <div class="col-sm-5" style="padding-top:4px;">
+                                        <table id="ProductTable" style="width:100%;">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="upload-btn">
+                                                        <input type="file" name="photo[]" style="margin-bottom:5px;" multiple>
+                                                    </div>
+                                                </td>
+                                                <td style="width:28px;"><a href="javascript:void()" class="Delete btn btn-danger btn-xs">X</a></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="button" id="btnAddNew" value="Add Item" style="margin-top: 5px;margin-bottom:10px;border:0;color: #fff;font-size: 14px;border-radius:3px;" class="btn btn-warning btn-xs">
                                     </div>
                                 </div>
 {{--                                <div class="mb-3 row">--}}
@@ -276,7 +296,37 @@
         <!-- container-scroller -->
         <!-- plugins:js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#btnAddNew").click(function () {
+
+                var rowNumber = $("#ProductTable tbody tr").length;
+
+                var trNew = "";
+
+                var addLink = "<div class=\"upload-btn" + rowNumber + "\"><input type=\"file\" name=\"photo[]\"  style=\"margin-bottom:5px;\"></div>";
+
+                var deleteRow = "<a href=\"javascript:void()\" class=\"Delete btn btn-danger btn-xs\">X</a>";
+
+                trNew = trNew + "<tr> ";
+
+                trNew += "<td>" + addLink + "</td>";
+                trNew += "<td style=\"width:28px;\">" + deleteRow + "</td>";
+
+                trNew = trNew + " </tr>";
+
+                $("#ProductTable tbody").append(trNew);
+
+            });
+            $('#ProductTable').delegate('a.Delete', 'click', function () {
+                $(this).parent().parent().fadeOut('slow').remove();
+                return false;
+            });
+        });
+    </script>
+            <script>
         setTimeout(function () {
             var alertDiv = document.getElementById('alertDiv');
             if (alertDiv) {

@@ -26,6 +26,8 @@ Route::delete('/delete_subCategory',[AdminController::class,'destroySubCat']);
 Route::post('/add_category',[AdminController::class,'add_category']);
 Route::post('/add_product',[AdminController::class,'add_product']);
 Route::delete('/delete_category',[AdminController::class,'delete_category']);
+Route::delete('/delete_product/{id}',[AdminController::class,'delete_product']);
+
 
 Route::get('/view_product',[AdminController::class,'view_product']);
 Route::get('/view_product',[AdminController::class,'showCat']);
@@ -36,7 +38,12 @@ Route::post('/activate/{id}',[AdminController::class,'activateOrDeactivate'])->n
 Route::get('/editProduct/{id}',[AdminController::class,'editProduct'])->name('editProduct');
 Route::post('/edit_product/{id}',[AdminController::class,'editP']);
 
+//Route::get('/returnShowProduct',[AdminController::class,'returnShow']);
 Route::get('/admin_home',[AdminController::class,'viewHome']);
+
+Route::get('/add_to_cart',[HomeController::class,'add_to_cart']);
+Route::get('/buy_now/{id}',[HomeController::class,'buyNow'])->name('home.buyNow');
+
 
 Route::middleware([
     'auth:sanctum',

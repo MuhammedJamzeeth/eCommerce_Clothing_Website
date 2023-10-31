@@ -20,6 +20,7 @@
     <link href="home/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="home/css/responsive.css" rel="stylesheet" />
+
 </head>
 <body>
 <div class="hero_area">
@@ -66,5 +67,16 @@
 <script src="home/js/bootstrap.js"></script>
 <!-- custom js -->
 <script src="home/js/custom.js"></script>
+
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+
+<script>
+    $(document).ready( function () {
+        $('#example').DataTable({
+            "autoWidth": false,
+        });
+    } );
+</script>
 </body>
 </html>

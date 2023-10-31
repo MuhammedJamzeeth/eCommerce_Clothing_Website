@@ -6,6 +6,35 @@
 #logincss{
     margin-right: 10px;
 }
+
+.prod-slider {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+.prod-slider li {
+    width: 100%; /* Adjust the width as needed */
+    height: 300px; /* Set your desired height */
+    background-size: cover;
+    background-position: center;
+
+}
+.prod-pager {
+    margin-top: 10px;
+}
+
+.prod-pager a {
+    margin-right: 10px; /* Adjust the spacing between pager items */
+}
+
+.prod-pager-thumb {
+    width: 50px; /* Set your desired thumbnail width */
+    height: 50px; /* Set your desired thumbnail height */
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #fff; /* Add border to the pager thumbnails */
+}
 body {
   font-family: 'Montserrat', sans-serif;
   color: #0c0c0c;

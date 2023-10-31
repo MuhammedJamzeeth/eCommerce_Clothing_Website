@@ -9,17 +9,9 @@
                             <div class="flex items-center">
                                 <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
                                     <li>
-                                        <a href="#" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
+                                        <a href="{{url('/redirect')}}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
                                     </li>
-                                    <li>
-                                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Company</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Team</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Features</a>
-                                    </li>
+
                                     <li class="-auto top-0 right-0">
                                         <!-- Settings Dropdown -->
 
