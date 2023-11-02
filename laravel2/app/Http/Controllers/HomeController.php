@@ -31,8 +31,9 @@ class HomeController extends Controller
     }
     public function buyNow($id){
         $product = DB::table('products')->find($id);
+        $productNames = DB::table('products')->where('title','=',$product->title)->get();
         $productPhotos = DB::table('product_photos')->where('product_id','=',$id)->get();
-//        dd($product);
-        return view('home.show_add_products',compact('product','productPhotos'));
+//        dd($productNames);
+        return view('home.show_add_products',compact('product','productPhotos','productNames'));
     }
 }

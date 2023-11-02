@@ -47,6 +47,27 @@
             border-radius: 0.5rem;
             cursor: pointer;
         }
+        .errorSection{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .errorMsg{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30%;
+            /*height: 60px;*/
+            background-color: rgba(255, 0, 0, 0.25);
+            border-radius: 0.4rem;
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .errorMrg.show2 {
+            opacity: 1;
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body>
@@ -63,8 +84,9 @@
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Library</li>
                     </ol>
-                </nav>
-
+                <div class="errorSection">
+                    <div id="error-message" class="errorMsg show2"></div>
+                </div>
                 <div class="product">
                     <div class="row mt-5">
 
@@ -161,20 +183,26 @@
                                     {{htmlspecialchars(trim(strip_tags($product->short_description)))}}
                                 </p>
                             </div>
-                            <form action="" method="post">
+                            <form id="myForm" action="" method="post">
                                 <div class="p-quantity">
                                     <div class="row">
                                         <div class="col-md-12 mb_20 pt-2">
                                             Select Size<br>
-                                            <select name="size_id" class="form-control" style="width: 70px;">
-                                                <option value="">size</option>
+                                            <select id="selectSize" name="size_id" class="form-control" style="width: 70px;">
+                                                @foreach($productNames as $productName)
+                                                <option value="{{$productName->size}}">{{$productName->size}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-md-12 pt-2">
-                                                Select Color<br>
-                                            <select name="color_id" class="form-control select2" style="width:70px;">
-                                            </select>
-                                        </div>
+                                        @if(\Illuminate\Support\Facades\Auth::user()->id)
+                                            <input type="hidden" value="1" id="userIn">
+                                        @else
+                                            <input type="hidden" value="0" id="userIn">
+                                        @endif
+                                        @foreach($productNames as $productName)
+                                            <input type="hidden" value="{{ $productName->size }}" name="productSizes[]" class="productSizeInput">
+                                            <input type="hidden" value="{{ $productName->quantity }}" name="productQuantities[]" class="productQuantityInput">
+                                        @endforeach
                                     </div>
 
                                 </div>
@@ -192,11 +220,12 @@
                                 <input type="hidden" name="p_featured_photo" value="<!----><?php //////echo $p_featured_photo; ?><!----><!---->">
                                 <div class="p-quantity pt-2">
                                      Quantity<br>
-                                    <input type="number" style="width: 70px; height: 30px" step="1" min="1" max="" name="p_qty" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric">
+                                    <input id="numQty" type="number" style="width: 70px; height: 30px" step="1" min="1" max="" name="p_qty" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric"> <span id="qty"></span>
                                 </div>
-                                <button type="submit" class="btn btn-warning">Add to cart</button>
-                                <button type="submit" class="btn btn-dark">Buy now</button>
-
+                                <button type="button" onclick="validateForm1()" class="btn btn-warning" id="addCart">Add to cart</button>
+                                <form action="" method="POST">
+                                <button type="button" onclick="validateForm2()" class="btn btn-dark">Buy now</button>
+                                </form>
                             </form>
                         </div>
                     </div>
@@ -259,6 +288,36 @@
     <script defer src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
+        var productSize=document.querySelectorAll('.productSizeInput');
+        var productQuantity=document.querySelectorAll('.productQuantityInput');
+        let selectSizes = document.getElementById('selectSize') ;
+        var qtyIn = document.getElementById('qty');
+        var numQ = document.getElementById('numQty');
+
+        console.log(productSize);
+        console.log(productQuantity);
+
+        qtyIn.innerText = "We have only "+productQuantity[0].value+' harry up!!!';
+        numQ.max=productQuantity[0].value;
+
+        selectSizes.addEventListener('change',function (){
+            // var selectedSizeIndex = selectSizes.value;
+            for(let i=0;i<productSize.length;i++){
+                console.log(i);
+                if(productSize[i].value == selectSizes.value){
+                    qtyIn.innerText = "We have only "+productQuantity[i].value+" hurry up!!!";
+                    numQ.max=productQuantity[i].value;
+                    return;
+                }else {
+                    qtyIn.innerText = "Size not found in stock.";
+                }
+
+            }
+        });
+
+    </script>
+
+    <script>
         var MainImg = document.getElementById("#MainImg");
         var smallimg = document.getElementsByClassName("small-img");
 
@@ -276,41 +335,7 @@
         }
 
     </script>
-    <script>
-        // Get the input element and total span element
-        var numberInput = document.getElementById('numberInput');
-        var totalSpan = document.getElementById('total');
-        var priceInput = document.getElementById('price');
 
-        // Add event listener to input element for input event
-        numberInput.addEventListener('input', function() {
-            // Parse the input value as a number
-            var inputValue = parseFloat(numberInput.value);
-            var priceValue = parseFloat(priceInput.textContent);
-
-            // If the input is a valid number, update the total
-            if (!isNaN(priceValue)) {
-                // Update the total by adding the input value
-                // var currentTotal = parseFloat(totalSpan.textContent);
-                var newTotal = priceValue * inputValue;
-
-                // Update the total span with the new total
-                totalSpan.textContent = "Rs."+newTotal;
-            }else {
-                // If the input is not a valid number, set total to 0
-                totalSpan.textContent = 1;
-            }
-        });
-    </script>
-
-    <script>
-        $(document).ready( function () {
-            $('#example').DataTable({
-                "autoWidth": false,
-            });
-        } );
-    </script>
-    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </div>
-</body>
+</div></body>
 </html>

@@ -44,3 +44,53 @@ function myMap() {
     };
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 }
+
+function validateForm1(){
+    var userIn = document.getElementById('userIn');
+    var errorMessage = document.getElementById("error-message");
+
+
+
+    if(userIn.value === '1'){
+        document.getElementById('addCart').submit();
+    }else {
+        errorMessage.textContent = "Please login before add to cart";
+        // errorMessage.classList.add("show2");
+        errorMessage.style.opacity = '1';
+        errorMessage.style.height = '60px';
+        errorMessage.style.transform = 'translateX(0)';
+
+        setTimeout(function() {
+            // errorMessage.classList.remove("show2","transition");
+            errorMessage.style.opacity = '0';
+            errorMessage.style.height = '0px';
+            errorMessage.style.transform = 'translateX(-100%)';
+        }, 3000);
+
+    }
+
+}
+function validateForm2(){
+    var userIn = document.getElementById('userIn');
+    var errorMessage = document.getElementById("error-message");
+
+    if(userIn.value == '1'){
+        document.getElementById('addCart').submit();
+    }else {
+        errorMessage.textContent = "Please login before buy";
+        // errorMessage.classList.add("show2");
+        errorMessage.style.opacity = '1';
+        errorMessage.style.height = '60px';
+        errorMessage.style.transform = 'translateX(0)';
+
+        setTimeout(function() {
+            // errorMessage.classList.remove("show2","transition");
+            errorMessage.style.opacity = '0';
+            errorMessage.style.height = '0px';
+            errorMessage.style.transform = 'translateX(-100%)';
+        }, 3000);
+
+    }
+
+}
+

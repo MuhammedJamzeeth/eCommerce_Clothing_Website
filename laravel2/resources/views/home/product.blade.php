@@ -29,7 +29,7 @@
                             {{$product->title}}
                         </h5>
                         <h6>
-                            $75
+                            Rs.{{$product->current_price}}
                         </h6>
                     </div>
                 </div>
