@@ -2,6 +2,8 @@
 <html>
 <head>
     <!-- Basic -->
+    <base href="{{ url('/') }}">
+
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Mobile Metas -->
@@ -10,8 +12,8 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/favicon.png" type="">
-    <title>Famms - Fashion HTML Template</title>
+    <link rel="shortcut icon" href="images/logo2.png" type="">
+    <title>Dress Code</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="home/css/bootstrap.css" />
     <!-- font awesome style -->
@@ -55,33 +57,62 @@
             </tr>
             </thead>
             <tbody>
-{{--            @foreach($products as $product)--}}
-                <tr>
-                    <td>1</td>
-                    <td style="width:82px;"><img src="product/" alt="img" style="width:50px;height: 50px"></td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td id="price">5</td>
-                    <td>
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            @csrf
-                           <input type="number" id="numberInput" style="width: 80px; height: 30px">
-                        </form>
-                    </td>
-                    {{--                                <td>{{htmlspecialchars(trim(strip_tags($product->description)))}}</td>--}}
-                    <td id="total">0</td>
-                    <td style="text-align: center; font-size: 24px">
-                        <a href="" style="color: red"><iconify-icon icon="material-symbols:delete"></iconify-icon></a>
-                    </td>
-                </tr>
+            @php
+                $i=1
+            @endphp
+            @foreach($showCarts as $cart)
+                @php
+                    $product = \Illuminate\Support\Facades\DB::table('products')->where('id','=',$cart->p_id)->first();
+                @endphp
+{{--                @dd($product)--}}
+
+                @if($product)
+                    <tr>
+                        <td>{{$i++}}</td>
+                        <td style="width:100px ;"><img src="product/{{$product->image}}" alt="img" style="width:50px;height: 50px"></td>
+                        <td>{{$product->title}}</td>
+                        <td>{{$product->size}}</td>
+                        <td>{{$product->color}}</td>
+                        <td class="price">{{$product->current_price}}</td>
+                        <td>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="number" min="1" class="numberInput" style="width: 80px; height: 30px" value="{{$cart->qty}}">
+                            </form>
+                        </td>
+                        {{--                                <td>{{htmlspecialchars(trim(strip_tags($product->description)))}}</td>--}}
+                        <td class="total">0</td>
+                        <td style="text-align: center; font-size: 24px">
+                            <a href="{{route('home.deleteCat',$cart->id)}}" style="color: red"><iconify-icon icon="material-symbols:delete"></iconify-icon></a>
+                        </td>
+                    </tr>
+                @endif
+            @endforeach
             </tbody>
             <tfoot>
                 <th colspan="7" style="text-align: right">Total</th>
-            <th>Rs.</th>
-            <th></th>
+                <th colspan="2" id="grantTotal">Rs.</th>
+
             </tfoot>
         </table>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-9">
+        </div>
+        <div class="col-md-1">
+{{--            <button type="button" class="btn btn-success">Success</button>--}}
+        </div>
+        <div class="col-md-2 ">
+            @if($getCart)
+            <form action="{{url('/pay_order',$getCart->u_id)}}" method="GET">
+                @csrf
+                <button type="submit" class="btn btn-success">Checkout now</button>
+                @else
+                    <button type="submit" class="btn btn-success" style="cursor: not-allowed" disabled>Checkout now</button>
+
+            </form>
+            @endif
+        </div>
     </div>
 </section>
     </div>
@@ -121,33 +152,10 @@
 <script defer src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        // Get the input element and total span element
-        var numberInput = document.getElementById('numberInput');
-        var totalSpan = document.getElementById('total');
-        var priceInput = document.getElementById('price');
 
-        // Add event listener to input element for input event
-        numberInput.addEventListener('input', function() {
-            // Parse the input value as a number
-            var inputValue = parseFloat(numberInput.value);
-            var priceValue = parseFloat(priceInput.textContent);
-
-            // If the input is a valid number, update the total
-            if (!isNaN(priceValue)) {
-                // Update the total by adding the input value
-                // var currentTotal = parseFloat(totalSpan.textContent);
-                var newTotal = priceValue * inputValue;
-
-                // Update the total span with the new total
-                totalSpan.textContent = "Rs."+newTotal;
-            }else {
-                // If the input is not a valid number, set total to 0
-                totalSpan.textContent = 1;
-            }
-        });
     </script>
 
-<script>
+    <script>
     $(document).ready( function () {
         $('#example').DataTable({
             "autoWidth": false,

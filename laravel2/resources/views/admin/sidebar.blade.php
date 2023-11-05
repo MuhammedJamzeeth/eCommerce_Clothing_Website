@@ -107,6 +107,23 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" href="{{url('/show_order')}}">
+              <span style="color: yellow" class="menu-icon" >
+                    <iconify-icon icon="icon-park-outline:transaction-order"></iconify-icon>
+              </span>
+                <span class="menu-title">Orders</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" href="{{url('/show_users')}}">
+              <span style="color: green" class="menu-icon" >
+                <iconify-icon icon="tabler:user-filled"></iconify-icon>
+              </span>
+                <span class="menu-title">Users</span>
+            </a>
+        </li>
+
 
 {{--        <li class="nav-item menu-items">--}}
 {{--            <a class="nav-link" href="{{url('view_category')}}">--}}
@@ -126,3 +143,4 @@
 
     </ul>
 </nav>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>

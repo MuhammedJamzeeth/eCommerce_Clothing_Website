@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductPhotos;
 use App\Models\subcategories;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -224,6 +227,84 @@ class AdminController extends Controller
         $countECat = DB::table('subcategories')->whereNotNull('id')->count();
         $countNewECat = DB::table('subcategories')->whereDate('created_at',$currentDate)->count();
 
-        return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat'));
+        $pendingOrders = DB::table('orders')->where('shipping_status','=','Pending')->count();
+        $pendingNewOrders = DB::table('orders')
+            ->where('shipping_status','=','Pending')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $completeOrders = DB::table('orders')->where('shipping_status','=','Completed')->count();
+        $completeNewOrders = DB::table('orders')
+            ->where('shipping_status','=','Completed')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $completeOrdersFinal = DB::table('orders')->where('shipping_status','=','Completed')
+            ->where('payment_status','=','PAID')
+            ->count();
+        $completeNewOrdersFinal = DB::table('orders')
+            ->where('shipping_status','=','Completed')
+            ->where('payment_status','=','PAID')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $pendingOrdersFinal = DB::table('orders')->where('shipping_status','=','Pending')
+            ->orWhere('payment_status','=','NOT PAID')
+            ->count();
+        $pendingNewOrdersFinal = DB::table('orders')
+            ->where('shipping_status','=','Pending')
+            ->orWhere('payment_status','=','NOT PAID')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $totalOrders = DB::table('orders')
+            ->count();
+        $totalNewOrders = DB::table('orders')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat','pendingOrders','pendingNewOrders','completeOrders','completeNewOrders','completeOrdersFinal','completeNewOrdersFinal','pendingOrdersFinal','pendingNewOrdersFinal','totalOrders','totalNewOrders'));
     }
+
+    public function showOrder(){
+
+        $orders = Order::all();
+        return view('admin.show_orders',compact('orders'));
+    }
+
+    public function paymentStatus($id, Request $request){
+
+        DB::table('orders')->where('id',$id)
+            ->update(['payment_status'=>$request->pStatus]);
+
+        return redirect()->back();
+    }
+    public function shipStatus($id, Request $request){
+
+        DB::table('orders')->where('id',$id)
+            ->update(['shipping_status'=>$request->pStatus]);
+
+        return redirect()->back();
+    }
+    public function orderDelete($id){
+
+        DB::table('orders')->where('id',$id)->delete();
+        return redirect()->back();
+    }
+
+    public function showUsers(){
+
+        $users = DB::table('users')
+            ->where('usertype','=','0')
+            ->get();
+        ;
+
+        return view('admin.show_users',compact('users'));
+    }
+    public function userDelete($id){
+
+        DB::table('users')->where('id',$id)->delete();
+        return redirect()->back();
+    }
+
 }

@@ -100,7 +100,7 @@
                             Fast Delivery
                         </h5>
                         <p>
-                            variations of passages of Lorem Ipsum available
+                            24/7
                         </p>
                     </div>
                 </div>
@@ -215,7 +215,7 @@
                             Free Shiping
                         </h5>
                         <p>
-                            variations of passages of Lorem Ipsum available
+                            All Island
                         </p>
                     </div>
                 </div>
@@ -236,7 +236,7 @@
                             Best Quality
                         </h5>
                         <p>
-                            variations of passages of Lorem Ipsum available
+                            Branded
                         </p>
                     </div>
                 </div>

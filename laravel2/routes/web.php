@@ -41,9 +41,12 @@ Route::post('/edit_product/{id}',[AdminController::class,'editP']);
 //Route::get('/returnShowProduct',[AdminController::class,'returnShow']);
 Route::get('/admin_home',[AdminController::class,'viewHome']);
 
-Route::get('/add_to_cart',[HomeController::class,'add_to_cart']);
+Route::get('/add_to_cart/{id}',[HomeController::class,'add_to_cart'])->name('home.add_to_cart');
 Route::get('/buy_now/{id}',[HomeController::class,'buyNow'])->name('home.buyNow');
 
+Route::post('/addcart/{id}',[HomeController::class,'addToCart']);
+
+Route::get('/category_product',[HomeController::class,'catProduct']);
 
 Route::middleware([
     'auth:sanctum',
@@ -55,5 +58,29 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/redirect',[HomeController::class,'redirect']);
+Route::get('/redirect',[HomeController::class,'redirect'])->name('home.userpage');
+Route::get('/show_cat/{id}',[HomeController::class,'filterCat']);
+Route::get('/delete_cart/{id}',[HomeController::class,'deleteCart'])->name('home.deleteCat');
+Route::get('/show_order',[AdminController::class,'showOrder']);
+Route::get('/pay_order/{id}',[HomeController::class,'pay_order']);
+Route::post('/place_order',[HomeController::class,'place_order']);
+
+
+Route::post('/payment_status/{id}',[AdminController::class,'paymentStatus']);
+Route::post('/ship_status/{id}',[AdminController::class,'shipStatus']);
+Route::delete('/order_delete/{id}',[AdminController::class,'orderDelete'])->name('admin.delete_order');
+Route::get('/show_users',[AdminController::class,'showUsers']);
+Route::delete('/user_delete/{id}',[AdminController::class,'userDelete'])->name('admin.delete_user');
+
+Route::get('/contact',[HomeController::class,'contact']);
+
+
+//Email
+
+Route::get('/test_mail', function (){
+    $name = "Jamsy";
+
+    \Illuminate\Support\Facades\Mail::to('mrjamzee002@gmail.com')->send(new \App\Mail\MyTestEmail($name));
+});
+
 

@@ -11,8 +11,8 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/favicon.png" type="">
-    <title>Famms - Fashion HTML Template</title>
+    <link rel="shortcut icon" href="images/logo2.png" type="">
+    <title>Dress Code</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="home/css/bootstrap.css" />
     <!-- font awesome style -->
@@ -76,6 +76,10 @@
     @include('home.header')
 
 <div class="page">
+{{--    @if(session('grandTotal'))--}}
+{{--        <p>Grand Total: {{ session('grandTotal') }}</p>--}}
+{{--    @endif--}}
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -183,7 +187,14 @@
                                     {{htmlspecialchars(trim(strip_tags($product->short_description)))}}
                                 </p>
                             </div>
-                            <form id="myForm" action="" method="post">
+                                @auth
+                                 <form id="myForm" action="{{url('/addcart',\Illuminate\Support\Facades\Auth::user()->id)}}" method="POST">
+                                @else
+                                         <form id="myForm" action="" method="POST">
+                                             @endauth
+
+                                @csrf
+                                <input type="hidden" name="pTitle" value="{{$product->title}}">
                                 <div class="p-quantity">
                                     <div class="row">
                                         <div class="col-md-12 mb_20 pt-2">
@@ -194,11 +205,11 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        @if(\Illuminate\Support\Facades\Auth::user()->id)
+                                        @auth
                                             <input type="hidden" value="1" id="userIn">
                                         @else
                                             <input type="hidden" value="0" id="userIn">
-                                        @endif
+                                        @endauth
                                         @foreach($productNames as $productName)
                                             <input type="hidden" value="{{ $productName->size }}" name="productSizes[]" class="productSizeInput">
                                             <input type="hidden" value="{{ $productName->quantity }}" name="productQuantities[]" class="productQuantityInput">
