@@ -74,6 +74,10 @@ Route::delete('/user_delete/{id}',[AdminController::class,'userDelete'])->name('
 
 Route::get('/contact',[HomeController::class,'contact']);
 
+Route::get('/financial',[AdminController::class,'financial']);
+
+Route::get('/buyCart',[HomeController::class,'buyCart']);
+
 
 //Email
 
@@ -84,3 +88,4 @@ Route::get('/test_mail', function (){
 });
 
 
+Route::get('/generate_pdf',[AdminController::class,'generatePDF']);

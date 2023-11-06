@@ -47,29 +47,27 @@
     <!-- end arrival section -->
 
     <!-- product section -->
-    @php
-    $name = explode(' ',$user->name);
-    @endphp
+{{--    @php--}}
+{{--    $name = explode(' ',$user->name);--}}
+{{--    $associativeArray = [--}}
+{{--    0 => $name[0], // First name--}}
+{{--    null => $name[1],    // Last name--}}
+{{--];--}}
+{{--    @endphp--}}
     <section>
         <div class="row mt-4 m-3">
             <div class="col-md-7">
                 <form action="{{url('/place_order')}}" method="POST">
                     @csrf
                     <div class="form-row">
-                        <div class="col-md-6 mb-3">
-                            <label for="validationCustom01">First name</label>
-                            <input type="text" class="form-control" name="first_name" placeholder="First name" value="{{$name[0]}}">
+                        <div class="col-md-8 mb-3">
+                            <label for="validationCustom01">Full Name</label>
+                            <input type="text" class="form-control" name="first_name" placeholder="First name" value="{{$user->name}}">
                             @if($errors->has('first_name'))
                                 <small id="emailHelp" class="form-text text-muted"><span style="color: red">{{$errors->first('first_name')}}</span></small>
                             @endif
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="validationCustom02">Last name</label>
-                            <input type="text" class="form-control" name="last_name" placeholder="Last name" value="{{$name[1]}}" required>
-                            @if($errors->has('last_name'))
-                                <small id="emailHelp" class="form-text text-muted"><span style="color: red">{{$errors->first('last_name')}}</span></small>
-                            @endif
-                        </div>
+
                     </div>
                     <div class="form-group">
                         <label for="inputAddress">Address</label>
@@ -189,6 +187,14 @@
                         <input type="hidden" value="{{$resultQty}}" name="resultQty">
                         <input type="hidden" value="{{$resultId}}" name="allID">
                     </div>
+                    @if(session('error'))
+                        <div class="row">
+                            <div class="col" style="color: red; font-size: 12px">
+                            {{session('error')}}
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="divider"></div> <!-- Divider -->
                     <div class="row">
                         <div class="col-md-8 ml-2 mt-2" style="font-size: small; font-weight: bold; color: #555555">Delivery</div>

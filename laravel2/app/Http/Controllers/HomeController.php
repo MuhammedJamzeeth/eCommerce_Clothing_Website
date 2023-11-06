@@ -108,7 +108,6 @@ class HomeController extends Controller
     public function place_order(Request $request){
         $request->validate([
             'first_name'=>'required',
-            'last_name'=>'required',
             'address'=>'required',
             'city'=>'required',
             'district'=>'required',
@@ -123,19 +122,32 @@ class HomeController extends Controller
 //        dd($request->allID);
         $requestID = explode("|",$request->allID);
         $requestQty = explode("|",$request->resultQty);
-
+        $errorProduct = 0;
 
         for ($i=0;$i<count($requestID);$i++){
             $product = DB::table('products')->where('id',$requestID[$i])->first();
 
             $currentQty = $product->quantity;
 
+            if($currentQty <= $requestQty[$i]) {
+                $errorProduct = DB::table('products')->where('id', $requestID[$i])->first();
+                $errorDetail = "Exceed quantity We have " . $errorProduct->title . " " . $errorProduct->size . " Only " . $errorProduct->quantity;
+                return redirect()->back()->with('error', $errorDetail);
+            }
+
+//            DB::table('products')
+//                ->where('id',$requestID[$i])
+//                ->update(['quantity'=> $subQty]);
+////            dd($requestQty[0]);
+////            dd($requestID[0]);
+        }
+        for ($i = 0; $i < count($requestID); $i++) {
+            $product = DB::table('products')->where('id', $requestID[$i])->first();
+            $currentQty = $product->quantity;
             $subQty = $currentQty - $requestQty[$i];
-//            dd($requestQty[0]);
-//            dd($requestID[0]);
-            DB::table('products')
-                ->where('id',$requestID[$i])
-                ->update(['quantity'=> $subQty]);
+
+            // Update the database
+            DB::table('products')->where('id', $requestID[$i])->update(['quantity' => $subQty]);
         }
 
         $cart->customer_id = $request->userid;
@@ -146,7 +158,7 @@ class HomeController extends Controller
         $cart->email = $request->email;
         $cart->phone1= $request->phone;
         $cart->firstname = $request->first_name;
-        $cart->lastname = $request->last_name;
+        $cart->lastname = "null";
         $cart->pro_id = $request->resultPrice;
         $cart->qty = $request->resultQty;
         $cart->pro_name = $request->resultProduct;
@@ -161,6 +173,11 @@ class HomeController extends Controller
     public function contact(){
 
         return view('home.contact');
+    }
+
+    public function buyCart(){
+
+        return view();
     }
 }
 

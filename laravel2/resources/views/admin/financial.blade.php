@@ -61,62 +61,52 @@
                         </div>
                     @endif
                 </div>
+                <div class="row justify-content-center align-items-center mb-4">
+                    <form action="{{url('/generate_pdf')}}" method="GET">
+                        @csrf
+                    <div class="col text-right"><button type="submit" class="btn btn-primary">Print</button></div>
+                    </form>
+                </div>
                 <section class="content">
                     <div class="table-responsive">
                         <table id="example" class="table table-striped table-bordered table-hover table-striped" style="width:100%">
                             <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Product Details</th>
-                                <th>Order Date</th>
-                                <th>Paid Amount</th>
-                                <th>Payment Status</th>
-                                <th>Shipping Status</th>
-                                <th>Action</th>
+                                <th>Date</th>
+                                <th>Product Name</th>
+                                <th style="white-space: normal">Total Quantity</th>
+                                <th>Total Amount</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($orders as $order)
                                 @php
-                                 $user = \Illuminate\Support\Facades\DB::table('users')->where('id',$order->customer_id)->first();
-                                 $pr
+                                    $productsName = explode("|",$order->pro_name);
+                                    $productsQty = explode("|",$order->qty);
                                 @endphp
-                                <tr>
-                                    <td>{{$order->id}}</td>
-                                    <td><b style="color: white">ID:</b>{{$user->id}}<br><b style="color: white">Name:</b>{{$user->name}}<br><b style="color: white">Email:</b>{{$user->email}}</td>
-                                    <td style="white-space: normal;">{{$order->pro_name}}</td>
-                                    <td>{{$order->updated_at}}</td>
-                                    <td>{{$order->total_price}}</td>
-                                    <td>{{$order->payment_status}}<br>
-                                        <form action="{{url('/payment_status',$order->id)}}" method="POST">
-                                            @csrf
-                                            @if($order->payment_status == 'NOT PAID')
-                                                <button class="btn btn-success p-1 mt-1" name="pStatus" value="PAID">PAID</button>
-                                            @else
-                                                <button class="btn btn-warning p-1 mt-1" name="pStatus" VALUE="NOT PAID">NOT PAID</button>
-                                            @endif
-                                        </form>
-                                    </td>
-                                    <td>{{$order->shipping_status}}<br>
-                                        <form action="{{url('/ship_status',$order->id)}}" method="POST">
-                                            @csrf
-                                            @if($order->shipping_status == 'Pending')
-                                                <button class="btn btn-success p-1 mt-1" name="pStatus" value="Completed">Completed</button>
-                                            @else
-                                                <button class="btn btn-warning p-1 mt-1" name="pStatus" value="Pending">Pending</button>
-                                            @endif
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="{{route('admin.delete_order',$order->id)}}" method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" value="{{$order->id}}"  class="btn btn-danger p-1 deleteOrder">DELETE</button>
-                                        </form>
-                                    </td>
+                                @php
 
-                                </tr>
+                                    for ($i=0 ; $i < count($productsName); $i++){
+                                       $p = \Illuminate\Support\Facades\DB::table('products')->where('title',$productsName)->first();
+                                       $price = $p->current_price;
+                                       $tPrice = (float)$price * (float)$productsQty[$i];
+
+//                                       $financial = new \App\Models\Financial();
+//                                       $financial->order_date = $order->created_at;
+//                                       $financial->product_name = $productsName[$i];
+//                                       $financial->quantity = $productsQty[$i];
+//                                       $financial->total_amount = $tPrice;
+//
+//                                       $financial->save();
+                                @endphp
+                                    <tr>
+                                        <td>{{$order->created_at}}</td>
+                                        <td>{{$productsName[$i]}}</td>
+                                        <td>{{$productsQty[$i]}}</td>
+                                        <td>{{number_format($tPrice,2)}}</td>
+                                    </tr>
+                                    @php }@endphp
+
                             @endforeach
                             </tbody>
                         </table>
@@ -146,6 +136,8 @@
     } );
 </script>
 
+@include('admin.script')
+<!-- End custom js for this page -->
 <script>
     $(document).ready(function() {
         // Store the row data when a "Delete" button is clicked
@@ -164,10 +156,6 @@
         });
     });
 </script>
-
-@include('admin.script')
-<!-- End custom js for this page -->
-
 <script>
     setTimeout(function () {
         var alertDiv = document.getElementById('alertDiv');

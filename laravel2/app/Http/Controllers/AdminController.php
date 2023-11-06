@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Financial;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductPhotos;
 use App\Models\subcategories;
 use App\Models\User;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -263,7 +266,20 @@ class AdminController extends Controller
             ->whereDate('created_at',$currentDate)
             ->count();
         ;
-        return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat','pendingOrders','pendingNewOrders','completeOrders','completeNewOrders','completeOrdersFinal','completeNewOrdersFinal','pendingOrdersFinal','pendingNewOrdersFinal','totalOrders','totalNewOrders'));
+        $products = Product::all();
+        if(Auth::check())
+        {
+            $userType = Auth::user()->usertype;
+            if($userType == 1){
+                return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat','pendingOrders','pendingNewOrders','completeOrders','completeNewOrders','completeOrdersFinal','completeNewOrdersFinal','pendingOrdersFinal','pendingNewOrdersFinal','totalOrders','totalNewOrders'));
+            }
+            else{
+                return view('home.userpage',compact('products'));
+            }
+        }else{
+            return view('home.userpage',compact('products'));
+        }
+
     }
 
     public function showOrder(){
@@ -305,6 +321,76 @@ class AdminController extends Controller
 
         DB::table('users')->where('id',$id)->delete();
         return redirect()->back();
+    }
+
+    public function financial(){
+
+        $orders = DB::table('orders')->where('payment_status','=','PAID')->get();
+
+        return view('admin.financial',compact('orders'));
+    }
+
+    public function generatePDF(){
+
+        $orders = DB::table('orders')->where('payment_status','=','PAID')->get();
+
+        $associativeArrayProduct = [];
+
+        foreach($orders as $order){
+            $productsName = explode("|",$order->pro_name);
+            $productsQty = explode("|",$order->qty);
+
+            for ($i=0 ; $i < count($productsName); $i++) {
+                $p = \Illuminate\Support\Facades\DB::table('products')->where('title', $productsName)->first();
+                $price = $p->current_price;
+                $tPrice = (float)$price * (float)$productsQty[$i];
+
+                $financial = new \App\Models\Financial();
+                $financial->order_date = $order->created_at;
+                $financial->product_name = $productsName[$i];
+                $financial->quantity = $productsQty[$i];
+                $financial->total_amount = $tPrice;
+
+                $financial->save();
+
+            }
+        }
+
+
+
+        $associativeArray = array();
+
+//        $financials = Financial::all();
+
+
+        $productName = DB::table('financials')->distinct()->pluck('product_name');
+//        dd($productName);
+        $name = [];
+        $i = 0;
+        foreach ($productName as $product) {
+            $total = 0; // Reset total for each product
+            $financials =DB::table('financials')->where('product_name', $product)->get();
+
+//            dd($financials);
+
+            foreach ($financials as $financial) {
+                    $total += $financial->quantity;
+            }
+            $associativeArray[$product] = $total; // Assign the total to the product name in the associative array
+        }
+
+        DB::table('financials')->delete();
+//        dd($productName);
+//        dd($associativeArray);
+
+        $data = [
+            'title' => 'Sample PDF',
+            'products' => $productName,
+            'associativeArray' => $associativeArray,
+        ];
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('purchases.financial_report',$data);
+
+        return $pdf->download('sample.pdf');
     }
 
 }

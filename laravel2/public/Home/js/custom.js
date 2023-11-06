@@ -112,6 +112,10 @@ function validateForm1(){
     var userIn = document.getElementById('userIn');
     var errorMessage = document.getElementById("error-message");
 
+    var numQtyInput = document.getElementById("numQty");
+    var errorMessage = document.getElementById("error-message");
+    var productSize=document.querySelectorAll('.productSizeInput');
+    var productQuantity=document.querySelectorAll('.productQuantityInput');
 
 
     if(userIn.value === '1'){
@@ -132,6 +136,7 @@ function validateForm1(){
 
     }
 
+
 }
 function updatePrice(){
     var grandTotalElement = document.getElementById('grantTotal');
@@ -143,9 +148,10 @@ function updatePrice(){
 function validateForm2(){
     var userIn = document.getElementById('userIn');
     var errorMessage = document.getElementById("error-message");
+    var numberInput = document.getElementById('numQty');
 
     if(userIn.value == '1'){
-        document.getElementById('addCart').submit();
+        document.getElementById('myForm2').submit();
     }else {
         errorMessage.textContent = "Please login before buy";
         // errorMessage.classList.add("show2");
@@ -163,6 +169,5 @@ function validateForm2(){
     }
 
 }
-
 
 

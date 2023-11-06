@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/laravel2/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/laravel2/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/laravel2/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/laravel2/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/asm89/stack-cors" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/bacon/bacon-qr-code" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/brick/math" />
