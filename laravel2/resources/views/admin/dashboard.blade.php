@@ -210,6 +210,26 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-4 col-sm-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="d-flex align-items-center align-self-start">
+                                    <h3 class="mb-0" style="font-size: 20px">{{number_format($totalAmount,2)}}</h3>
+                                    <p class="text-success ml-2 mb-0 font-weight-medium">+{{$totalNewAmount}}</p>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="icon icon-box-success">
+                                    <i class="mdi mdi-note-text"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">Total Sales Amount</h6>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

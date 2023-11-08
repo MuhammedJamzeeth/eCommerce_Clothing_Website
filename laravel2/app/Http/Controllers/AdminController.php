@@ -266,12 +266,19 @@ class AdminController extends Controller
             ->whereDate('created_at',$currentDate)
             ->count();
         ;
+
+        $totalAmount = DB::table('orders')->sum('total_price');
+        $totalNewAmount = DB::table('orders')
+            ->whereDate('created_at',$currentDate)
+            ->sum('total_price');
+        ;
+
         $products = Product::all();
         if(Auth::check())
         {
             $userType = Auth::user()->usertype;
             if($userType == 1){
-                return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat','pendingOrders','pendingNewOrders','completeOrders','completeNewOrders','completeOrdersFinal','completeNewOrdersFinal','pendingOrdersFinal','pendingNewOrdersFinal','totalOrders','totalNewOrders'));
+                return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat','pendingOrders','pendingNewOrders','completeOrders','completeNewOrders','completeOrdersFinal','completeNewOrdersFinal','pendingOrdersFinal','pendingNewOrdersFinal','totalOrders','totalNewOrders','totalAmount','totalNewAmount'));
             }
             else{
                 return view('home.userpage',compact('products'));

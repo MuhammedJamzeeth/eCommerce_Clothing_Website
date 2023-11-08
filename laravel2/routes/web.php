@@ -89,3 +89,4 @@ Route::get('/test_mail', function (){
 
 
 Route::get('/generate_pdf',[AdminController::class,'generatePDF']);
+Route::get('/about',[HomeController::class,'about']);

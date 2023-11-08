@@ -13,18 +13,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('/redirect')}}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item dropdown .custom-nav-item">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Pages <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="testimonial.html">Testimonial</a></li>
-                        </ul>
-                    </li>
+
                     <li class="nav-item custom-nav-item">
                         <a class="nav-link" href="{{url('/category_product')}}">Products</a>
                     </li>
                     <li class="nav-item custom-nav-item">
-                        <a class="nav-link" href="blog_list.html">Blog</a>
+                        <a class="nav-link" href="{{url('/about')}}">About</a>
                     </li>
                     <li class="nav-item custom-nav-item">
                         <a class="nav-link" href="{{url('/contact')}}">Contact</a>
