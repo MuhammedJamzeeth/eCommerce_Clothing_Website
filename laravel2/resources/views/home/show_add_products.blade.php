@@ -11,8 +11,8 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/favicon.png" type="">
-    <title>Famms - Fashion HTML Template</title>
+    <link rel="shortcut icon" href="images/logo2.png" type="">
+    <title>Dress Code</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="home/css/bootstrap.css" />
     <!-- font awesome style -->
@@ -76,6 +76,10 @@
     @include('home.header')
 
 <div class="page">
+{{--    @if(session('grandTotal'))--}}
+{{--        <p>Grand Total: {{ session('grandTotal') }}</p>--}}
+{{--    @endif--}}
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -183,7 +187,14 @@
                                     {{htmlspecialchars(trim(strip_tags($product->short_description)))}}
                                 </p>
                             </div>
-                            <form id="myForm" action="" method="post">
+                                @auth
+                                 <form id="myForm" action="{{url('/addcart',\Illuminate\Support\Facades\Auth::user()->id)}}" method="POST">
+                                @else
+                                         <form id="myForm" action="" method="POST">
+                                             @endauth
+
+                                @csrf
+                                <input type="hidden" name="pTitle" value="{{$product->title}}">
                                 <div class="p-quantity">
                                     <div class="row">
                                         <div class="col-md-12 mb_20 pt-2">
@@ -194,12 +205,13 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        @if(\Illuminate\Support\Facades\Auth::user()->id)
+                                        @auth
                                             <input type="hidden" value="1" id="userIn">
                                         @else
                                             <input type="hidden" value="0" id="userIn">
-                                        @endif
+                                        @endauth
                                         @foreach($productNames as $productName)
+{{--                                            @dd($productName)--}}
                                             <input type="hidden" value="{{ $productName->size }}" name="productSizes[]" class="productSizeInput">
                                             <input type="hidden" value="{{ $productName->quantity }}" name="productQuantities[]" class="productQuantityInput">
                                         @endforeach
@@ -220,13 +232,15 @@
                                 <input type="hidden" name="p_featured_photo" value="<!----><?php //////echo $p_featured_photo; ?><!----><!---->">
                                 <div class="p-quantity pt-2">
                                      Quantity<br>
-                                    <input id="numQty" type="number" style="width: 70px; height: 30px" step="1" min="1" max="" name="p_qty" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric"> <span id="qty"></span>
+                                    <input id="numQty" type="number" style="width: 70px; height: 30px" step="1" min="1" name="p_qty" value="1" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric"> <span id="qty"></span>
                                 </div>
-                                <button type="button" onclick="validateForm1()" class="btn btn-warning" id="addCart">Add to cart</button>
-                                <form action="" method="POST">
-                                <button type="button" onclick="validateForm2()" class="btn btn-dark">Buy now</button>
-                                </form>
+
+                                <button type="button" id="addCart" onclick="validateForm1()" class="btn btn-warning" id="addCart">Add to cart</button>
                             </form>
+{{--                                         <form id="myForm2" action="{{'/buyCart'}}" method="POST">--}}
+{{--                                             <button type="button" id="buyCart" onclick="validateForm2()" class="btn btn-dark mt-2">Buy now</button>--}}
+{{--                                         </form>--}}
+                            </div>
                         </div>
                     </div>
 
@@ -270,6 +284,7 @@
 
         </p>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- jQery -->
@@ -278,6 +293,60 @@
     <script src="home/js/popper.min.js"></script>
     <!-- bootstrap js -->
     <script src="home/js/bootstrap.js"></script>
+    <script>
+
+        var productSize=document.querySelectorAll('.productSizeInput');
+        var productQuantity=document.querySelectorAll('.productQuantityInput');
+        let selectSizes = document.getElementById('selectSize') ;
+        var qtyIn = document.getElementById('qty');
+        var numQ = document.getElementById('numQty');
+        var addCart = document.getElementById('addCart');
+        var checkQty;
+        var buyCart = document.getElementById('buyCart');
+
+
+
+        console.log(productSize);
+        console.log(productQuantity);
+
+        qtyIn.innerText = "We have only "+productQuantity[0].value+' harry up!!!';
+        numQ.max=productQuantity[0].value;
+
+        checkQty = productQuantity[0].value;
+        selectSizes.addEventListener('change',function (){
+            // var selectedSizeIndex = selectSizes.value;
+            for(let i=0;i<productSize.length;i++){
+                console.log(i);
+                if(productSize[i].value === selectSizes.value){
+                    qtyIn.innerText = "We have only "+productQuantity[i].value+" hurry up!!!";
+                    checkQty = productQuantity[i].value
+                    numQ.max = productQuantity[i].value;
+                    break;
+                }else {
+                    qtyIn.innerText = "Size not found in stock.";
+                }
+
+            }
+        });
+        numQ.addEventListener("input", function() {
+            var enteredValue = parseInt(numQ.value);
+            if (enteredValue > checkQty) {
+                qtyIn.innerText = "Don't exceed "+checkQty+"!!!";
+                qtyIn.style.color = "red";
+                addCart.disabled = true;
+                buyCart.disabled = true;
+                numQ.value = checkQty; // Set the value to 100
+            } else {
+                qtyIn.innerText = "We have only "+checkQty+" hurry up!!!";;
+                qtyIn.style.color = "";
+                addCart.disabled = false;
+                buyCart.disabled = false;
+
+            }
+        });
+
+    </script>
+
     <!-- custom js -->
     <script src="home/js/custom.js"></script>
 
@@ -287,35 +356,8 @@
     <script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script defer src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-    <script>
-        var productSize=document.querySelectorAll('.productSizeInput');
-        var productQuantity=document.querySelectorAll('.productQuantityInput');
-        let selectSizes = document.getElementById('selectSize') ;
-        var qtyIn = document.getElementById('qty');
-        var numQ = document.getElementById('numQty');
 
-        console.log(productSize);
-        console.log(productQuantity);
 
-        qtyIn.innerText = "We have only "+productQuantity[0].value+' harry up!!!';
-        numQ.max=productQuantity[0].value;
-
-        selectSizes.addEventListener('change',function (){
-            // var selectedSizeIndex = selectSizes.value;
-            for(let i=0;i<productSize.length;i++){
-                console.log(i);
-                if(productSize[i].value == selectSizes.value){
-                    qtyIn.innerText = "We have only "+productQuantity[i].value+" hurry up!!!";
-                    numQ.max=productQuantity[i].value;
-                    return;
-                }else {
-                    qtyIn.innerText = "Size not found in stock.";
-                }
-
-            }
-        });
-
-    </script>
 
     <script>
         var MainImg = document.getElementById("#MainImg");

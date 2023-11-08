@@ -13,9 +13,9 @@
                 <div class="box">
                     <div class="option_container">
                         <div class="options">
-                            <a href="" class="option1">
-                                Men's Shirt
-                            </a>
+{{--                            <a href="" class="option1">--}}
+{{--                                $--}}
+{{--                            </a>--}}
                             <a href="{{route('home.buyNow',$product->id)}}" class="option2">
                                 Buy Now
                             </a>

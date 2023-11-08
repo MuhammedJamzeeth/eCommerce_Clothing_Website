@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Financial;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductPhotos;
 use App\Models\subcategories;
+use App\Models\User;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -224,6 +230,174 @@ class AdminController extends Controller
         $countECat = DB::table('subcategories')->whereNotNull('id')->count();
         $countNewECat = DB::table('subcategories')->whereDate('created_at',$currentDate)->count();
 
-        return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat'));
+        $pendingOrders = DB::table('orders')->where('shipping_status','=','Pending')->count();
+        $pendingNewOrders = DB::table('orders')
+            ->where('shipping_status','=','Pending')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $completeOrders = DB::table('orders')->where('shipping_status','=','Completed')->count();
+        $completeNewOrders = DB::table('orders')
+            ->where('shipping_status','=','Completed')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $completeOrdersFinal = DB::table('orders')->where('shipping_status','=','Completed')
+            ->where('payment_status','=','PAID')
+            ->count();
+        $completeNewOrdersFinal = DB::table('orders')
+            ->where('shipping_status','=','Completed')
+            ->where('payment_status','=','PAID')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $pendingOrdersFinal = DB::table('orders')->where('shipping_status','=','Pending')
+            ->orWhere('payment_status','=','NOT PAID')
+            ->count();
+        $pendingNewOrdersFinal = DB::table('orders')
+            ->where('shipping_status','=','Pending')
+            ->orWhere('payment_status','=','NOT PAID')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+        $totalOrders = DB::table('orders')
+            ->count();
+        $totalNewOrders = DB::table('orders')
+            ->whereDate('created_at',$currentDate)
+            ->count();
+        ;
+
+        $totalAmount = DB::table('orders')->sum('total_price');
+        $totalNewAmount = DB::table('orders')
+            ->whereDate('created_at',$currentDate)
+            ->sum('total_price');
+        ;
+
+        $products = Product::all();
+        if(Auth::check())
+        {
+            $userType = Auth::user()->usertype;
+            if($userType == 1){
+                return view('admin.home',compact('countProducts','countNew','countUsers','countNewUsers','countTCat','countNewTCat','countECat','countNewECat','pendingOrders','pendingNewOrders','completeOrders','completeNewOrders','completeOrdersFinal','completeNewOrdersFinal','pendingOrdersFinal','pendingNewOrdersFinal','totalOrders','totalNewOrders','totalAmount','totalNewAmount'));
+            }
+            else{
+                return view('home.userpage',compact('products'));
+            }
+        }else{
+            return view('home.userpage',compact('products'));
+        }
+
     }
+
+    public function showOrder(){
+
+        $orders = Order::all();
+        return view('admin.show_orders',compact('orders'));
+    }
+
+    public function paymentStatus($id, Request $request){
+
+        DB::table('orders')->where('id',$id)
+            ->update(['payment_status'=>$request->pStatus]);
+
+        return redirect()->back();
+    }
+    public function shipStatus($id, Request $request){
+
+        DB::table('orders')->where('id',$id)
+            ->update(['shipping_status'=>$request->pStatus]);
+
+        return redirect()->back();
+    }
+    public function orderDelete($id){
+
+        DB::table('orders')->where('id',$id)->delete();
+        return redirect()->back();
+    }
+
+    public function showUsers(){
+
+        $users = DB::table('users')
+            ->where('usertype','=','0')
+            ->get();
+        ;
+
+        return view('admin.show_users',compact('users'));
+    }
+    public function userDelete($id){
+
+        DB::table('users')->where('id',$id)->delete();
+        return redirect()->back();
+    }
+
+    public function financial(){
+
+        $orders = DB::table('orders')->where('payment_status','=','PAID')->get();
+
+        return view('admin.financial',compact('orders'));
+    }
+
+    public function generatePDF(){
+
+        $orders = DB::table('orders')->where('payment_status','=','PAID')->get();
+
+        $associativeArrayProduct = [];
+
+        foreach($orders as $order){
+            $productsName = explode("|",$order->pro_name);
+            $productsQty = explode("|",$order->qty);
+
+            for ($i=0 ; $i < count($productsName); $i++) {
+                $p = \Illuminate\Support\Facades\DB::table('products')->where('title', $productsName)->first();
+                $price = $p->current_price;
+                $tPrice = (float)$price * (float)$productsQty[$i];
+
+                $financial = new \App\Models\Financial();
+                $financial->order_date = $order->created_at;
+                $financial->product_name = $productsName[$i];
+                $financial->quantity = $productsQty[$i];
+                $financial->total_amount = $tPrice;
+
+                $financial->save();
+
+            }
+        }
+
+
+
+        $associativeArray = array();
+
+//        $financials = Financial::all();
+
+
+        $productName = DB::table('financials')->distinct()->pluck('product_name');
+//        dd($productName);
+        $name = [];
+        $i = 0;
+        foreach ($productName as $product) {
+            $total = 0; // Reset total for each product
+            $financials =DB::table('financials')->where('product_name', $product)->get();
+
+//            dd($financials);
+
+            foreach ($financials as $financial) {
+                    $total += $financial->quantity;
+            }
+            $associativeArray[$product] = $total; // Assign the total to the product name in the associative array
+        }
+
+        DB::table('financials')->delete();
+//        dd($productName);
+//        dd($associativeArray);
+
+        $data = [
+            'title' => 'Sample PDF',
+            'products' => $productName,
+            'associativeArray' => $associativeArray,
+        ];
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('purchases.financial_report',$data);
+
+        return $pdf->download('sample.pdf');
+    }
+
 }

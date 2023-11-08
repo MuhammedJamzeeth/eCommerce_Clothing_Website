@@ -12,7 +12,7 @@
                         </h2>
                     </div>
                     <p style="margin-top: 20px;margin-bottom: 30px;">
-                        Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
+                        At Dress Code, we are thrilled to unveil our new arrivals, a carefully curated selection of the latest and hottest fashion trends. Prepare to be captivated by the freshest styles, vibrant colors, and innovative designs that are set to redefine your wardrobe. Our team of fashion experts tirelessly scours the globe to bring you the most coveted pieces, ensuring you stay ahead in the style game.
                     </p>
                     <a href="">
                         Shop Now

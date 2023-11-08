@@ -6,7 +6,43 @@
 #logincss{
     margin-right: 10px;
 }
+.cat{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.btn-box-cat{
+    margin-bottom: 3px;
+    display: flex;
+    height: 50px;
+    background: #f7444e;
+    width: 90%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-cat a{
+    color: black;
+}
+.btn-box-cat a{
+    color: black;
+}
+.btn-box-cat a:hover{
+    color: #f7444e;
+}
+.btn-box-cat .activate{
+    background: none;
+    color: #f7444e;
+    border: 1px solid #f7444e;
+}
 
+.btn-box-cat:hover{
+    background: none;
+    color: #f7444e;
+    border: 1px solid #f7444e;
+}
 .prod-slider {
     list-style: none;
     padding: 0;
@@ -154,7 +190,7 @@ a:focus {
 }
 
 .header_section {
-    padding: 15px 0;
+    padding: 6px 0;
 }
 
 .header_section .container-fluid {
@@ -1155,4 +1191,5 @@ form input[type="submit"]:focus {
 http://kute-themes.com/html/boutique/html/index.html
 https://template.hasthemes.com/noraure/noraure/index.html
 https://preview.hasthemes.com/xoss-preview/xoss/index.html
+
 
